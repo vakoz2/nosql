@@ -1,6 +1,6 @@
 ## Łukasz Szlas
 
-Wybrany zbiór danych: TODO
+Wybrany zbiór danych: [Crimes in Chicago 2012 - 2017](https://www.kaggle.com/currie32/crimes-in-chicago)
 
 (zaliczenie)
 
