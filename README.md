@@ -56,8 +56,8 @@ Zwraca 10000, czyli ok.
 ### Zapytania
 Treści zapytań są w plikach: elQuery1.query [TODO: Daj linki], elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
 #### Przestępstwa dokonane w promieniu kilometra od ratusza Mapka[TODO link]
-<code>curl.exe localhost:9200/crimes/_search?size=10000 --data-binary @elQuery1.query | jq .hits.hits[]._source > result1.json<code>
-#### Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty program, który go poprawia.
+<code>curl.exe localhost:9200/crimes/_search?size=10000 --data-binary @elQuery1.query | jq .hits.hits[]._source > result1.json</code>
+Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty program, który go poprawia.
 <code>Geohelper.exe result1.json</code>
 zwraca result1fixed.json, który się waliduje
 
