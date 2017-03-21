@@ -21,7 +21,7 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 | Dysk                  | SSD GoodRam Iridium Pro 240GB |
 | Baza danych           | TODO |
 
-# Obróka danych
+# Obróbka danych
 #### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
 ### Z nieznanego mi powodu program [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla całego pliku csv z danymi więc napisałem własny. CSVHelper [TODO daj link] oczyszcza tabelę ze zbędnych kolumn i zapisuje wynik do plików .csv i .json. Przyjmuje także parametr -random x, gdzie x to liczba losowych rekordów, które zwróci program.
 #### Początek oryginalnego pliku
