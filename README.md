@@ -62,5 +62,8 @@ Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty progr
 
 <code>Geohelper.exe result1.json</code>
 
-zwraca result1fixed.json, który się waliduje
+zwraca result1fixed.json, który się waliduje.
+Następnie korzystam ze skruptu w js [TODO daj link]
+<code>node.exe geojson.js result1fixed.json >> result1.csv</code>
+który zamienia mi format danych z json na csv. Następnie przy użyciu [geoison.io](http://geojson.io) zapisuje plik geojson do mojego repo.
 
