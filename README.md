@@ -56,7 +56,7 @@ Zwraca 10000, czyli ok.
 ### Zapytania
 Treści zapytań są w plikach: elQuery1.query [TODO: Daj linki], elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
 #### Przestępstwa dokonane w promieniu kilometra od ratusza [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
-#### Przestępstwa dokonane w danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
+#### Przestępstwa dokonane na danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
 
 #### Opis kroków:
 
