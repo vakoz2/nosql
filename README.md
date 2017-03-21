@@ -77,3 +77,25 @@ Następnie korzystam ze skruptu w js [TODO daj link]
 
 który zamienia mi format danych z json na csv. Następnie przy użyciu [geoison.io](http://geojson.io) zapisuje plik geojson do mojego repo.
 
+# Zadanie 1
+## Postgres
+#### Stworzenie klastra:
+<code>pg_ctl init</code>
+#### Uruchomienie serwera:
+<code>pg_ctl start</code>
+#### Stworzenie bazy danych:
+<code>createdb.exe testdb</code>
+#### Połączenie z bazą:
+<code>psql.exe testdb</code>
+#### Stworzenie tabli:
+```
+CREATE TABLE Crimes(Date varchar, PrimaryType varchar, Description varchar, LocationDescription varchar, 
+Arrest boolean, Domestic boolean, Beat integer, District decimal, Ward decimal, CommunityArea decimal, Year integer,
+UpdatedOn varchar, Latitude decimal, Longitude decimal);
+```
+(daty póki co są jako varchar, bo są w złym formacie. Z dokumentacji wynika, że powinna pomóc zmiana ustawień w konfigu, ale póki co
+nie udało mi się tego ustawić. Jak dalej nie będę mógł tego ogarnąć to chyba usunę godziny i zostawię samą datę)
+#### Import danych
+<code>\copy Crimes FROM 'C:\Users\vakoz\nosql\data\crimesSample.csv' DELIMITER ',' CSV HEADER</code>
+
+zwróciło <code>COPY 10000</code>, czyli ok
