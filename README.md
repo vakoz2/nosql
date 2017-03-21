@@ -40,3 +40,11 @@ crimesSample.json
 {"Date": "05/03/2016 09:40:00 PM", "Primary Type": "BATTERY", "Description": "DOMESTIC BATTERY SIMPLE", "Location Description": "RESIDENCE", "Arrest": "False", "Domestic": "True", "Beat": 313, "District": 3.0, "Ward": 20.0, "Community Area": 42.0, "Year": 2016, "Updated On": "05/10/2016 03:56:50 PM", "Latitude": 41.782921527, "Longitude": -87.60436317}
 ```
 #### Wyjaśnienie poszczególnych wartości w [Crimes in Chicago 2012 - 2017](https://www.kaggle.com/currie32/crimes-in-chicago)
+# Zadanie GEO
+## Elasticsearch
+#### Utworzenie bazy
+<code>curl.exe -s -XPUT localhost:9200/crimes --data-binary @crimes.mappings</code>
+#### Import pliku z danymi
+Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
+
+<code>type data\crimesSample.json | jq -c "{\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
