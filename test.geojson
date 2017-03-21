@@ -1,6 +1,4 @@
-GeoJSON.parse(data, {Point: ['lat', 'lng']});
- 
-{
+ {
   "type": "FeatureCollection",
   "features": [
     { "type": "Feature",
