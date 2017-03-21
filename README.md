@@ -56,6 +56,10 @@ Zwraca 10000, czyli ok.
 ### Zapytania
 Treści zapytań są w plikach: elQuery1.query [TODO: Daj linki], elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
 #### Przestępstwa dokonane w promieniu kilometra od ratusza [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
+#### Przestępstwa dokonane w danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
+
+#### Opis kroków:
+
 <code>curl.exe localhost:9200/crimes/_search?size=10000 --data-binary @elQuery1.query | jq .hits.hits[]._source > result1.json</code>
 
 Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty program, który go poprawia.
@@ -69,5 +73,4 @@ Następnie korzystam ze skruptu w js [TODO daj link]
 <code>node.exe geojson.js result1fixed.json >> result1.csv</code>,
 
 który zamienia mi format danych z json na csv. Następnie przy użyciu [geoison.io](http://geojson.io) zapisuje plik geojson do mojego repo.
-#### Przestępstwa dokonane w danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
 
