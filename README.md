@@ -42,9 +42,9 @@ crimesSample.json
 #### Wyjaśnienie poszczególnych wartości w [Crimes in Chicago 2012 - 2017](https://www.kaggle.com/currie32/crimes-in-chicago)
 # Zadanie GEO
 ## Elasticsearch
-#### Utworzenie bazy
+### Utworzenie bazy
 <code>curl.exe -s -XPUT localhost:9200/crimes --data-binary @crimes.mappings</code>
-#### Import pliku z danymi
+### Import pliku z danymi
 Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 
 <code>type data\crimesSample.json |jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
@@ -53,8 +53,11 @@ Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 
 Zwraca 10000, czyli ok.
 
-#### Zapytania
+### Zapytania
 Treści zapytań są w plikach: elQuery1.query [TODO: Daj linki], elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
-##### Przestępstwa dokonane w promieniu kilometra od ratusza Mapka[TODO link]
+#### Przestępstwa dokonane w promieniu kilometra od ratusza Mapka[TODO link]
 <code>curl.exe localhost:9200/crimes/_search?size=10000 --data-binary @elQuery1.query | jq .hits.hits[]._source > result1.json<code>
+#### Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty program, który go poprawia.
+<code>Geohelper.exe result1.json</code>
+zwraca result1fixed.json, który się waliduje
 
