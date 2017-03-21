@@ -99,3 +99,8 @@ nie udało mi się tego ustawić. Jak dalej nie będę mógł tego ogarnąć to 
 <code>\copy Crimes FROM 'C:\Users\vakoz\nosql\data\crimesSample.csv' DELIMITER ',' CSV HEADER</code>
 
 zwróciło <code>COPY 10000</code>, czyli ok
+#### Ilość kradzieży zakończonych aresztowaniem
+<code>SELECT COUNT(*) FROM Crimes WHERE PrimaryType='THEFT' AND Arrest=TRUE;</code>
+```
+262
+```
