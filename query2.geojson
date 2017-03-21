@@ -1,0 +1,311 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/07/2016 11:25:00 AM",
+        "Primary Type": "CRIM SEXUAL ASSAULT",
+        "Description": "NON-AGGRAVATED",
+        "Location Description": "OTHER",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1834,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "05/14/2016 03:53:39 PM",
+        "Location": "[-87.628049777;41.891135724]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628049777,
+          41.891135724
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "01/16/2015 06:20:00 PM",
+        "Primary Type": "THEFT",
+        "Description": "POCKET-PICKING",
+        "Location Description": "CTA TRAIN",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2015,
+        "Updated On": "08/17/2015 03:03:40 PM",
+        "Location": "[-87.628466349;41.891662431]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628466349,
+          41.891662431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/06/2016 09:50:00 AM",
+        "Primary Type": "THEFT",
+        "Description": "FROM BUILDING",
+        "Location Description": "DEPARTMENT STORE",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "05/13/2016 03:51:16 PM",
+        "Location": "[-87.628074498;41.891893286]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628074498,
+          41.891893286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/18/2016 03:00:00 PM",
+        "Primary Type": "THEFT",
+        "Description": "$500 AND UNDER",
+        "Location Description": "PARKING LOT/GARAGE(NON.RESID.)",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1834,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "06/06/2016 03:48:33 PM",
+        "Location": "[-87.627551654;41.891678767]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.627551654,
+          41.891678767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/31/2016 03:00:00 PM",
+        "Primary Type": "THEFT",
+        "Description": "FROM BUILDING",
+        "Location Description": "BANK",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "06/07/2016 03:57:55 PM",
+        "Location": "[-87.629155474;41.892454255]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.629155474,
+          41.892454255
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "01/08/2015 01:45:00 PM",
+        "Primary Type": "THEFT",
+        "Description": "OVER $500",
+        "Location Description": "RESTAURANT",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2015,
+        "Updated On": "08/17/2015 03:03:40 PM",
+        "Location": "[-87.631118191;41.891316439]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.631118191,
+          41.891316439
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/14/2014 03:15:00 PM",
+        "Primary Type": "ASSAULT",
+        "Description": "SIMPLE",
+        "Location Description": "CTA STATION",
+        "Arrest": "True",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2014,
+        "Updated On": "02/04/2016 06:33:39 AM",
+        "Location": "[-87.628046859;41.8910671]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628046859,
+          41.8910671
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/06/2016 09:30:00 AM",
+        "Primary Type": "BATTERY",
+        "Description": "SIMPLE",
+        "Location Description": "RESTAURANT",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1832,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "05/13/2016 03:51:16 PM",
+        "Location": "[-87.63115524;41.892628411]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.63115524,
+          41.892628411
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/09/2016 08:00:00 AM",
+        "Primary Type": "CRIM SEXUAL ASSAULT",
+        "Description": "NON-AGGRAVATED",
+        "Location Description": "HOTEL/MOTEL",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1832,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "05/23/2016 03:48:54 PM",
+        "Location": "[-87.628106353;41.8926701]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628106353,
+          41.8926701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "05/17/2016 01:45:00 PM",
+        "Primary Type": "THEFT",
+        "Description": "FROM BUILDING",
+        "Location Description": "RESTAURANT",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1832,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2016,
+        "Updated On": "05/24/2016 04:07:34 PM",
+        "Location": "[-87.628106353;41.8926701]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.628106353,
+          41.8926701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Date": "01/09/2015 10:00:00 PM",
+        "Primary Type": "BATTERY",
+        "Description": "SIMPLE",
+        "Location Description": "STREET",
+        "Arrest": "False",
+        "Domestic": "False",
+        "Beat": 1831,
+        "District": 18,
+        "Ward": 42,
+        "Community Area": 8,
+        "Year": 2015,
+        "Updated On": "08/17/2015 03:03:40 PM",
+        "Location": "[-87.630375031;41.892437029]"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.630375031,
+          41.892437029
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -87.63119101524353,
+              41.89085702404937
+            ],
+            [
+              -87.62666344642639,
+              41.89085702404937
+            ],
+            [
+              -87.62666344642639,
+              41.89322904173341
+            ],
+            [
+              -87.63119101524353,
+              41.89322904173341
+            ],
+            [
+              -87.63119101524353,
+              41.89085702404937
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
