@@ -47,4 +47,4 @@ crimesSample.json
 #### Import pliku z danymi
 Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 
-<code>type data\crimesSample.json | jq -c "{\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
+<code>type data\crimesSample.json |jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"small_crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
