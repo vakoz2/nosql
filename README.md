@@ -48,7 +48,9 @@ crimesSample.json
 Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 
 <code>type data\crimesSample.json |jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
+
 <code> curl localhost:9200/crimes/crime/_count | jq .count </code>
+
 Zwraca 10000, czyli ok.
 
 #### Zapytania
