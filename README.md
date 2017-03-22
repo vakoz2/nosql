@@ -23,7 +23,7 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 
 # Obróbka danych
 #### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
-### Z nieznanego mi powodu program [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla całego pliku csv z danymi więc napisałem własny. CSVHelper [TODO daj link] oczyszcza tabelę ze zbędnych kolumn i zapisuje wynik do plików .csv i .json. Przyjmuje także parametr -random x, gdzie x to liczba losowych rekordów, które zwróci program.
+### Z nieznanego mi powodu program [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla całego pliku csv z danymi więc napisałem własny. CSVHelper oczyszcza tabelę ze zbędnych kolumn i zapisuje wynik do plików .csv i .json. Przyjmuje także parametr -random x, gdzie x to liczba losowych rekordów, które zwróci program.
 #### Początek oryginalnego pliku
 ```
 Num,ID,Case Number,Date,Block,IUCR,Primary Type,Description,Location Description,Arrest,Domestic,Beat,District,Ward,Community Area,FBI Code,X Coordinate,Y Coordinate,Year,Updated On,Latitude,Longitude,Location
@@ -54,12 +54,76 @@ Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 Zwraca 10000, czyli ok.
 
 ### Zapytania
-Treści zapytań są w plikach: elQuery1.query [TODO: Daj linki], elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
+Treści zapytań są w plikach: elQuery1.query, elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
 #### Przestępstwa dokonane w promieniu kilometra od ratusza [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
 #### Przestępstwa dokonane na danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query2.geojson)
 #### Kradzieże na terenie lotniska (bounding_box) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query3.geojson)
 Tutaj tabelka pokazująca dokładne miejsca kradzieży:
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/złodziejaszki.png)
+
+elQuery1.query
+```
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance" : {
+                    "distance" : "1km",
+                    "Location": [-87.631631, 41.88386]
+                }
+            }
+        }
+    }
+}
+
+```
+elQuery2.query
+```
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_polygon" : {
+                    "Location" : {
+                        "points" : [
+                            [-87.63119101524353, 41.89085702404937],
+                            [-87.62666344642639, 41.89085702404937],
+                            [-87.62666344642639, 41.89322904173341],
+                            [-87.63119101524353, 41.89322904173341]
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
+```
+elQuery3.query
+```
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match" : {"Primary Type": "THEFT"}
+            },
+            "filter" : {
+                "geo_bounding_box" : {
+                    "Location": {
+                      "top_left": [-87.9400634765625,42.00772369765501],
+                      "bottom_right": [-87.86848068237305,41.956171100940026]
+                    }
+                }
+            }
+        }
+    }
+}
+```
 
 #### Opis kroków:
 
@@ -71,7 +135,19 @@ Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty progr
 
 zwraca result1fixed.json, który się waliduje.
 
-Następnie korzystam ze skruptu w js [TODO daj link]
+Następnie korzystam z którkiego skruptu w js
+```
+var converter = require('json-2-csv');
+var fs = require('fs');
+
+var csv2jsonCallback = function (err, json) {
+    if (err) throw err;
+    console.log(json);
+}
+
+var data = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+converter.json2csv(data, csv2jsonCallback);
+```
 
 <code>node.exe geojson.js result1fixed.json >> result1.csv</code>,
 
