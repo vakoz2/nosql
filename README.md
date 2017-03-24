@@ -67,10 +67,11 @@ Postanowiłem utworzyć próbkę losowych rekordów, wrzucić ją na gita i na n
 <code>time sort -R Chicago_Crimes_2012_to_2017.csv | head -n 10000 >> sample.csv </code>
 Tutaj czas i wykorzystanie wyglądają znacznie lepiej
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/bash%20power.png)
+```
 real    1m48,901s
 user    13m57,561s
 sys     0m3,499s
-
+```
 # Zadanie GEO
 ## Elasticsearch
 ### Utworzenie bazy
