@@ -22,24 +22,37 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 | Baza danych           | TODO |
 
 # Obróbka danych
-#### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
-### Z nieznanego mi powodu program [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla całego pliku csv z danymi więc napisałem własny. CSVHelper oczyszcza tabelę ze zbędnych kolumn i zapisuje wynik do plików .csv i .json. Przyjmuje także parametr -random x, gdzie x to liczba losowych rekordów, które zwróci program.
+##### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
+##### Wcześniej miałem tutaj notkę, że [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla moich danych. Dostałem (po użyciu opcji -verbose) MEMORY ERROR - okazało się, że problem stanowi 32bitowa wersja Pythona. Po reinstalacji mogłem już korzystać z CSVKit zamiast swoich programów w C++. Chociaż trzeba przyznać, iż czas działania CSVKit jest okropnie długi (mimo że mój kod był daleki od optymalnego wykonywał się <code>30 sec </code>
+
 #### Początek oryginalnego pliku
 ```
-Num,ID,Case Number,Date,Block,IUCR,Primary Type,Description,Location Description,Arrest,Domestic,Beat,District,Ward,Community Area,FBI Code,X Coordinate,Y Coordinate,Year,Updated On,Latitude,Longitude,Location
+,ID,Case Number,Date,Block,IUCR,Primary Type,Description,Location Description,Arrest,Domestic,Beat,District,Ward,Community Area,FBI Code,X Coordinate,Y Coordinate,Year,Updated On,Latitude,Longitude,Location
 3,10508693,HZ250496,05/03/2016 11:40:00 PM,013XX S SAWYER AVE,0486,BATTERY,DOMESTIC BATTERY SIMPLE,APARTMENT,True,True,1022,10.0,24.0,29.0,08B,1154907.0,1893681.0,2016,05/10/2016 03:56:50 PM,41.864073157,-87.706818608,"(41.864073157, -87.706818608)"
 ```
-#### Początek plików .csv i .json wygenerowanych przez <code>CSVHelper -random 10000</code>
-crimesSample.csv
-```
-Date,Primary Type,Description,Location Description,Arrest,Domestic,Beat,District,Ward,Community Area,Year,Updated On,Latitude,Longitude
-05/03/2016 09:40:00 PM,BATTERY,DOMESTIC BATTERY SIMPLE,RESIDENCE,False,True,313,3.0,20.0,42.0,2016,05/10/2016 03:56:50 PM,41.782921527,-87.60436317
-```
-crimesSample.json
-```
-{"Date": "05/03/2016 09:40:00 PM", "Primary Type": "BATTERY", "Description": "DOMESTIC BATTERY SIMPLE", "Location Description": "RESIDENCE", "Arrest": "False", "Domestic": "True", "Beat": 313, "District": 3.0, "Ward": 20.0, "Community Area": 42.0, "Year": 2016, "Updated On": "05/10/2016 03:56:50 PM", "Latitude": 41.782921527, "Longitude": -87.60436317}
-```
-#### Wyjaśnienie poszczególnych wartości w [Crimes in Chicago 2012 - 2017](https://www.kaggle.com/currie32/crimes-in-chicago)
+#### Objaśnienie kolumn
+##### Te, które postanowiłem zatrzymać
+
+- [x] Date - data zajścia incydentu
+- [x] Primary Type - typ przestępstwa
+- [x] Description - opis przestępstwa
+- [x] Location Description - opis miejsca
+- [x] Arrest - czy doszło do zatrzymania
+- [x] Domestic - czy typu przemoc domowa
+- [x] Beat - najmniejszy obszar policyjny. Od 3 do 5 takich obszarów tworzą sektor, a 3 sektory tworzą dystrykt. Current Police Beats: https://data.cityofchicago.org/d/aerh-rz74
+- [x] District - https://data.cityofchicago.org/d/fthy-xz3r
+- [x] Ward - dystrykt rady miejskiej - https://data.cityofchicago.org/d/sp34-6z76
+- [x] Community Area - kolejny podział na obszary - https://data.cityofchicago.org/d/cauq-8yn6
+- [x] Year - rok w którym doszło do przestępstwa. W sumie mógłym pominąć...
+- [x] Updated On - data dokonania ostatniej aktualizacji rekordu
+- [x] Latitude - szerokość geograficzna miejsca popełnienia przestępstwa
+- [x] Longitude - długość geograficzna
+
+Kolumny, które odrzuciłem to: id, nume sprawy, kod FBI, IUCR (który jest id dla Primary Type & Description) oraz współrzędne geograficzne (X, Y coordianate), ponieważ mam już pola lat/lon.
+#### Generowanie pliku z losową próbką danych
+Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardzo długo (po ponad godzinie go przerwałem). 
+<code>head -n 1 Chicago_Crimes_2012_to_2017.csv > sample.csv</code>
+<code>time sort -R Chicago_Crimes_2012_to_2017.csv | head -n 10000 >> sample.csv </code>
 # Zadanie GEO
 ## Elasticsearch
 ### Utworzenie bazy
