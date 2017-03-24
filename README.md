@@ -21,7 +21,7 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 | Dysk                  | SSD GoodRam Iridium Pro 240GB |
 | Baza danych           | TODO |
 
-# Obróbka danych
+# Trochę informacji o danych
 ##### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
 ##### Wcześniej miałem tutaj notkę, że [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla moich danych. Dostałem (po użyciu opcji -verbose) MEMORY ERROR - okazało się, że problem stanowi 32bitowa wersja Pythona. Po reinstalacji mogłem już korzystać z CSVKit zamiast swoich programów w C++. Chociaż trzeba przyznać, iż czas działania CSVKit jest okropnie długi (mimo że mój kod był daleki od optymalnego wykonywał się <code>30 sec </code>
 
@@ -56,12 +56,19 @@ Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardz
 jak widać spore wykorzystanie pamięci, procesor się nudzi(użycie na poziomie 5-20%)
 - Po godzinie
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-pamiec.png)
-![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-dysk.png)
-
+Wykorzystanie pamięci ~100%. Procesor nadal słabo wykorzystywany.
 - Po przerwaniu
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-koniec.png)
+
+Postanowiłem utworzyć próbkę losowych rekordów, wrzucić ją na gita i na niej dokonywać operacji (dane będą pobierane, obrabiane i wrzucane do bazy (bez zapisu na dysk)).
 <code>head -n 1 Chicago_Crimes_2012_to_2017.csv > sample.csv</code>
 <code>time sort -R Chicago_Crimes_2012_to_2017.csv | head -n 10000 >> sample.csv </code>
+Tutaj czas i wykorzystanie wyglądają znacznie lepiej
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-koniec.png)
+real    1m48,901s
+user    13m57,561s
+sys     0m3,499s
+
 # Zadanie GEO
 ## Elasticsearch
 ### Utworzenie bazy
