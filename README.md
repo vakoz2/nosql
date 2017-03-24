@@ -50,7 +50,16 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 
 Kolumny, które odrzuciłem to: id, nume sprawy, kod FBI, IUCR (który jest id dla Primary Type & Description) oraz współrzędne geograficzne (X, Y coordianate), ponieważ mam już pola lat/lon.
 #### Generowanie pliku z losową próbką danych
-Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardzo długo (po ponad godzinie go przerwałem). 
+Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardzo długo (po ponad godzinie go przerwałem).
+- Początek
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-poczatek.png)
+jak widać spore wykorzystanie pamięci, procesor się nudzi(użycie na poziomie 5-20%)
+- Po godzinie
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-pamiec.png)
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-dysk.png)
+
+- Po przerwaniu
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-koniec.png)
 <code>head -n 1 Chicago_Crimes_2012_to_2017.csv > sample.csv</code>
 <code>time sort -R Chicago_Crimes_2012_to_2017.csv | head -n 10000 >> sample.csv </code>
 # Zadanie GEO
@@ -61,7 +70,6 @@ Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardz
 Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
 
 <code>type data\crimesSample.json |jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
-![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-poczatek.png)
 
 <code> curl localhost:9200/crimes/crime/_count | jq .count </code>
 
