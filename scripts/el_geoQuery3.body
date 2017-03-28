@@ -1,0 +1,19 @@
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match" : {"Primary Type": "THEFT"}
+            },
+            "filter" : {
+                "geo_bounding_box" : {
+                    "Location": {
+                      "top_left": [-87.9400634765625,42.00772369765501],
+                      "bottom_right": [-87.86848068237305,41.956171100940026]
+                    }
+                }
+            }
+        }
+    }
+}
+
+

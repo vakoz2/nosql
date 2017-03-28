@@ -1,0 +1,17 @@
+{
+  "query": { 
+    "bool": {
+      "must": [
+        {"match_all": {}}
+      ],
+      "filter": [
+        {"term": {
+          "Primary Type": "theft"
+        }},
+        {"term": {
+          "Arrest": "true"
+        }}
+      ]
+    }
+  }
+}

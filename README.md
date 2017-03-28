@@ -1,6 +1,6 @@
 ## Łukasz Szlas
 
-Wybrany zbiór danych: [Crimes in Chicago 2012 - 2017](https://www.kaggle.com/currie32/crimes-in-chicago)
+Wybrany zbiór danych: [Crimes in Chicago 2012 - 2017](https://bitbucket.org/vakoz/nosql/raw/b61e19efe79fb7bcc56837a593041cfcfd6be535/Chicago_Crimes_2012_to_2017.csv)
 
 (zaliczenie)
 
@@ -19,10 +19,10 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 | Procesor              | i7-2630QM 2.0 GHz, 2.9 GHz Turbo, 4 rdzenie |
 | Pamięć                | 8 GB |
 | Dysk                  | SSD GoodRam Iridium Pro 240GB |
-| Baza danych           | TODO |
+| Baza danych           | Elasticsearch 5.2.2, Postgresql 9.6.2 |
 
 # Trochę informacji o danych
-##### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 344 mb.
+##### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 349 mb.
 ##### Wcześniej miałem tutaj notkę, że [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla moich danych. Dostałem (po użyciu opcji -verbose) MEMORY ERROR - okazało się, że problem stanowi 32bitowa wersja Pythona. Po reinstalacji mogłem już korzystać z CSVKit zamiast swoich programów w C++. Chociaż trzeba przyznać, iż czas działania CSVKit jest okropnie długi (mimo że mój kod był daleki od optymalnego wykonywał się <code>30 sec </code>
 
 #### Początek oryginalnego pliku
@@ -73,144 +73,262 @@ real    1m48,901s
 user    13m57,561s
 sys     0m3,499s
 ```
-# Zadanie GEO
-## Elasticsearch
-### Utworzenie bazy
-<code>curl.exe -s -XPUT localhost:9200/crimes --data-binary @crimes.mappings</code>
-### Import pliku z danymi
-Do importu wykorzystałem narzędzie <b>type</b> (windowsowy cat) i <b>jq</b>
-
-<code>type data\crimesSample.json |jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl.exe -XPOST localhost:9200/_bulk --data-binary @- </code>
-
-<code> curl localhost:9200/crimes/crime/_count | jq .count </code>
-
-Zwraca 10000, czyli ok.
-
-### Zapytania
-Treści zapytań są w plikach: elQuery1.query, elQuery2.query, elQuery3.query. Operuję na bazie 10k losowych danych zaimportowanych krok wcześniej.
-#### Przestępstwa dokonane w promieniu kilometra od ratusza [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query1.geojson)
-#### Przestępstwa dokonane na danym obszarze (polygon) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query2.geojson)
-#### Kradzieże na terenie lotniska (bounding_box) [Mapka](https://github.com/vakoz2/nosql/blob/master/geojson/query3.geojson)
-Tutaj tabelka pokazująca dokładne miejsca kradzieży:
-![alt tag](https://github.com/vakoz2/nosql/blob/master/złodziejaszki.png)
-
-elQuery1.query
-```
-{
-    "query": {
-        "bool" : {
-            "must" : {
-                "match_all" : {}
-            },
-            "filter" : {
-                "geo_distance" : {
-                    "distance" : "1km",
-                    "Location": [-87.631631, 41.88386]
-                }
-            }
-        }
-    }
-}
-
-```
-elQuery2.query
-```
-{
-    "query": {
-        "bool" : {
-            "must" : {
-                "match_all" : {}
-            },
-            "filter" : {
-                "geo_polygon" : {
-                    "Location" : {
-                        "points" : [
-                            [-87.63119101524353, 41.89085702404937],
-                            [-87.62666344642639, 41.89085702404937],
-                            [-87.62666344642639, 41.89322904173341],
-                            [-87.63119101524353, 41.89322904173341]
-                        ]
-                    }
-                }
-            }
-        }
-    }
-}
-```
-elQuery3.query
-```
-{
-    "query": {
-        "bool" : {
-            "must" : {
-                "match" : {"Primary Type": "THEFT"}
-            },
-            "filter" : {
-                "geo_bounding_box" : {
-                    "Location": {
-                      "top_left": [-87.9400634765625,42.00772369765501],
-                      "bottom_right": [-87.86848068237305,41.956171100940026]
-                    }
-                }
-            }
-        }
-    }
-}
-```
-
-#### Opis kroków:
-
-<code>curl.exe localhost:9200/crimes/_search?size=10000 --data-binary @elQuery1.query | jq .hits.hits[]._source > result1.json</code>
-
-Jako, że plik result1.json nie jest prawidłowym jsonem napisałem prosty program, który go poprawia.
-
-<code>Geohelper.exe result1.json</code>
-
-zwraca result1fixed.json, który się waliduje.
-
-Następnie korzystam z którkiego skruptu w js
-```
-var converter = require('json-2-csv');
-var fs = require('fs');
-
-var csv2jsonCallback = function (err, json) {
-    if (err) throw err;
-    console.log(json);
-}
-
-var data = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-converter.json2csv(data, csv2jsonCallback);
-```
-
-<code>node.exe geojson.js result1fixed.json >> result1.csv</code>,
-
-który zamienia mi format danych z json na csv. Następnie przy użyciu [geoison.io](http://geojson.io) zapisuje plik geojson do mojego repo.
-
 # Zadanie 1
 ## Postgres
-#### Stworzenie klastra:
-<code>pg_ctl init</code>
-#### Uruchomienie serwera:
+##### Wymagane programy:
+- Postgresql
+- CSVKit i SQLAlchemy
+- ptime (dostarczony w repo)
+
+Wszystkie poniższe komendy są uruchamiane ze skryptu [postgres.bat](https://github.com/vakoz2/nosql/blob/master/postgres.bat). Skrypt należy uruchomić w katalogu z projektem (nosql) z parametrem **sample** lub **full**. Przedstawione poniżej wyniki są efektem działań na próbce.
+##### Uruchomienie serwera:
 <code>pg_ctl start</code>
-#### Stworzenie bazy danych:
-<code>createdb.exe testdb</code>
-#### Połączenie z bazą:
-<code>psql.exe testdb</code>
-#### Stworzenie tabli:
+##### Pobieranie (bez zapisu na dysk) i oczyszczanie danych oraz utworzenie bazy, tabeli i import danych.
+Trzeba przyznać, że CSVKit świetnie sobie radzi z rozpoznawaniem typu danych i konwersji ich do odpowiedniego formatu, np w oryginalnym pliku data wygląda tak: 05/03/2016 11:40:00 PM (jak próbowałem ręcznie wpisać taką datę do postgresa to wyrzucało mi błąd (oczywiście można by użyć daty takiego typu, ale wymagało by to zmiany w configu, albo  zdefiniowanie tego formatu timestampem)).
+<code>ptime scripts\pg_import.bat %link%</code>
+**plik pg_import.bat**
 ```
-CREATE TABLE Crimes(Date varchar, PrimaryType varchar, Description varchar, LocationDescription varchar, 
-Arrest boolean, Domestic boolean, Beat integer, District decimal, Ward decimal, CommunityArea decimal, Year integer,
-UpdatedOn varchar, Latitude decimal, Longitude decimal);
-```
-(daty póki co są jako varchar, bo są w złym formacie. Z dokumentacji wynika, że powinna pomóc zmiana ustawień w konfigu, ale póki co
-nie udało mi się tego ustawić. Jak dalej nie będę mógł tego ogarnąć to chyba usunę godziny i zostawię samą datę)
-#### Import danych
-<code>\copy Crimes FROM 'C:\Users\vakoz\nosql\data\crimesSample.csv' DELIMITER ',' CSV HEADER</code>
-
-zwróciło <code>COPY 10000</code>, czyli ok
-#### Ilość kradzieży zakończonych aresztowaniem
-<code>SELECT COUNT(*) FROM Crimes WHERE PrimaryType='THEFT' AND Arrest=TRUE;</code>
-```
-262
+curl -s %1 | 
+csvcut -c 4,7,8,9,10,11,12,13,14,15,19,20,21,22 | 
+csvgrep -c 13,14 -r "^$" -i | 
+csvsql --db postgresql:///test --insert --tables crimes
 ```
 
+
+![alt tag](http://tutaj link do pg_import)
+```
+Execution time: 13.358 s
+```
+
+##### Zliczanie wszystkich rekordów:
+<code>ptime sql2csv --db postgresql:///test --query "SELECT COUNT(*) FROM crimes"</code>
+```
+count
+9773
+
+Execution time: 0.571 s
+```
+#### Agregacje
+Pliki z zapytaniami agregującymi są odpalane poleceniem:
+<code>ptime psql -d test -f scripts\pg_queryX.sql</code>, gdzie X to numer agregacji.
+
+##### 1. Ilość przestępstw w danych latach:
+```language
+SELECT "Year", COUNT(*) AS count FROM crimes 
+GROUP BY "Year" 
+ORDER BY "Year" DESC
+```
+```
+ Year | count
+------+-------
+ 2017 |     1
+ 2016 |  1724
+ 2015 |  1806
+ 2014 |  1862
+ 2013 |  2041
+ 2012 |  2339
+(6 wierszy)
+
+Execution time: 0.055 s
+```
+##### 2. 5 najczęsciej popełnianych przestępstw w pierwszym kwartale 2016 roku:
+```
+SELECT "Primary Type", COUNT(*) AS "type" FROM crimes 
+WHERE "Date" >= '2016-01-01' AND "Date" < '2016-04-01'
+GROUP BY "Primary Type"
+ORDER BY "type" DESC
+LIMIT 5
+```
+```
+  Primary Type   | type
+-----------------+------
+ BATTERY         |   92
+ THEFT           |   64
+ CRIMINAL DAMAGE |   56
+ ASSAULT         |   32
+ OTHER OFFENSE   |   24
+(5 wierszy)
+
+Execution time: 0.042 s
+```
+
+##### 3. Ilość kradzieży zakończonych aresztowaniem:
+```
+SELECT COUNT(*) FROM crimes 
+WHERE "Primary Type" LIKE '%THEFT%' AND "Arrest"='TRUE'
+```
+```
+   274
+(1 wiersz)
+
+Execution time: 0.046 s
+```
+## Elasticsearch
+##### Wymagane programy:
+- Elasticsearch (uruchomiony)
+- CSVKit
+- jq
+- curl
+- ptime (dostarczony w repo)
+
+Wszystkie poniższe komendy są uruchamiane ze skryptu [elastic.bat](https://github.com/vakoz2/nosql/blob/master/elastic.bat). Skrypt należy uruchomić w katalogu z projektem (nosql) z parametrem **sample** lub **full**. Pomiary czasu były wykonywane na lokalnym pliku.
+#### Utworzenie mappingu
+<code>curl.exe -s -XPUT localhost:9200/crimes --data-binary @crimes.mappings</code>
+#### Import pliku z danymi
+
+<code>pip scripts\el_import.bat</code>
+**plik el_import.bat**
+```
+curl -s %1 |
+csvcut -c 4,7,8,9,10,11,12,13,14,15,19,20,21,22 |
+csvgrep -c 13,14 -r "^$" -i |
+csvjson --stream | jq -c ". |
+.Location = [.Longitude, .Latitude] |
+{\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." |
+curl -XPOST localhost:9200/_bulk --data-binary @-
+```
+![alt tag](http://tutaj link do el_import.png)
+```
+Execution time: 16.403 s
+```
+##### Zliczanie wszystkich rekordów:
+<code>ptime scripts\el_count.bat</code>
+**plik el_count.bat**
+<code>curl localhost:9200/crimes/crime/_count | jq .count</code>
+```
+9773
+
+Execution time: 0.058 s
+```
+
+#### Agregacje
+Pliki z zapytaniami agregującymi są odpalane poleceniem:
+<code>ptime scripts\el_queryX.bat</code>, gdzie X to numer agregacji.
+##### 1. Ilość przestępstw w danych latach:
+```
+{
+  "size": 0,
+  "aggs": {
+    "group_by_year": {
+      "terms": {
+        "field": "Year",
+        "order": {
+          "_term": "desc"
+        }
+      }
+    }
+  }
+}
+```
+```
+[
+  {
+    "key": 2017,
+    "doc_count": 1
+  },
+  {
+    "key": 2016,
+    "doc_count": 1724
+  },
+  {
+    "key": 2015,
+    "doc_count": 1806
+  },
+  {
+    "key": 2014,
+    "doc_count": 1862
+  },
+  {
+    "key": 2013,
+    "doc_count": 2041
+  },
+  {
+    "key": 2012,
+    "doc_count": 2339
+  }
+]
+Execution time: 0.111 s
+```
+##### 2. 5 najczęsciej popełnianych przestępstw w pierwszym kwartale 2016 roku:
+```
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "Date": {
+              "gt": "2015-12-31T23:59:59.999Z",
+              "lt": "2016-04-01T00:00:00.000Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "group_by_type": {
+      "terms": {
+        "field": "Primary Type.keyword",
+        "size": 5
+      }
+    }
+  }
+}
+```
+
+```
+[
+  {
+    "key": "BATTERY",
+    "doc_count": 92
+  },
+  {
+    "key": "THEFT",
+    "doc_count": 64
+  },
+  {
+    "key": "CRIMINAL DAMAGE",
+    "doc_count": 56
+  },
+  {
+    "key": "ASSAULT",
+    "doc_count": 32
+  },
+  {
+    "key": "OTHER OFFENSE",
+    "doc_count": 24
+  }
+]
+
+Execution time: 0.050 s
+```
+
+##### 3. Ilość kradzieży zakończonych aresztowaniem:
+```
+{
+  "query": { 
+    "bool": {
+      "must": [
+        {"match_all": {}}
+      ],
+      "filter": [
+        {"term": {
+          "Primary Type": "theft"
+        }},
+        {"term": {
+          "Arrest": "true"
+        }}
+      ]
+    }
+  }
+}
+```
+```
+274
+
+Execution time: 0.059 s
+```
+
+# [Zadanie GEO]((https://vakoz2.github.io)

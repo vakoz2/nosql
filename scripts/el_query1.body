@@ -1,0 +1,13 @@
+{
+  "size": 0,
+  "aggs": {
+    "group_by_year": {
+      "terms": {
+        "field": "Year",
+        "order": {
+          "_term": "desc"
+        }
+      }
+    }
+  }
+}

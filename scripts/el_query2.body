@@ -1,0 +1,25 @@
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "Date": {
+              "gt": "2015-12-31T23:59:59.999Z",
+              "lt": "2016-04-01T00:00:00.000Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "group_by_type": {
+      "terms": {
+        "field": "Primary Type.keyword",
+        "size": 5
+      }
+    }
+  }
+}

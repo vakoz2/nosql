@@ -1,0 +1,1 @@
+curllocalhost:9200/crimes/_search --data-binary @scripts\el_query2.body | jq .aggregations.group_by_type.buckets

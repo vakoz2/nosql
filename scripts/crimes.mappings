@@ -1,0 +1,53 @@
+{
+  "mappings": {
+    "crime": {
+      "properties": {
+        "Date": {
+          "type": "date"
+        },
+        "Primaty Type": {
+          "type": "text",
+		  "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+        },
+        "Description": {
+          "type": "text"
+        },
+        "Arrest": {
+          "type": "boolean"
+        },
+        "Domestic": {
+          "type": "boolean"
+        },
+        "Ward": {
+          "type": "text"
+        },
+        "Community": {
+          "type": "text"
+        },
+        "Area": {
+          "type": "text"
+        },
+        "Year": {
+          "type": "integer"
+        },
+        "Updated On": {
+          "type": "date"
+        },
+        "Latitude": {
+          "type": "text"
+        },
+        "Longitude": {
+          "type": "text"
+        },
+        "Location": {
+          "type": "geo_point"
+        }
+      }
+    }
+  }
+}

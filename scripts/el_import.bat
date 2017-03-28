@@ -1,0 +1,1 @@
+curl -s %1 | csvcut -c 4,7,8,9,10,11,12,13,14,15,19,20,21,22 | csvgrep -c 13,14 -r "^$" -i | csvjson --stream | jq -c ".| .Location = [.Longitude, .Latitude] | {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." | curl -XPOST localhost:9200/_bulk --data-binary @- 

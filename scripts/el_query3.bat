@@ -1,0 +1,1 @@
+curl.exe localhost:9200/crimes/_count --data-binary @scripts\el_query3.body | jq .count
