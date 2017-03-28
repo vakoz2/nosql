@@ -197,6 +197,7 @@ Execution time: 16.403 s
 ```
 ##### Zliczanie wszystkich rekordów:
 <code>ptime scripts\el_count.bat</code>
+
 **plik el_count.bat**
 <code>curl localhost:9200/crimes/crime/_count | jq .count</code>
 ```
