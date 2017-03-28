@@ -97,7 +97,7 @@ csvsql --db postgresql:///test --insert --tables crimes
 ```
 
 
-![alt tag](http://tutaj link do pg_import)
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/pg_import.png)
 ```
 Execution time: 13.358 s
 ```
@@ -191,7 +191,7 @@ csvjson --stream | jq -c ". |
 {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." |
 curl -XPOST localhost:9200/_bulk --data-binary @-
 ```
-![alt tag](http://tutaj link do el_import.png)
+![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/el_import.png)
 ```
 Execution time: 16.403 s
 ```
