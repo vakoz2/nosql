@@ -22,7 +22,6 @@ Informacje o komputerze na którym były wykonywane obliczenia:
 | Baza danych           | Elasticsearch 5.2.2, Postgresql 9.6.2 |
 
 # Trochę informacji o danych
-##### Spakowany plik z danymi, w formacie csv, waży 90 mb. Po rozpakowaniu zajmuje 349 mb.
 ##### Wcześniej miałem tutaj notkę, że [csvjson](http://csvkit.readthedocs.io/en/latest/scripts/csvjson.html) nie działa dla moich danych. Dostałem (po użyciu opcji -verbose) MEMORY ERROR - okazało się, że problem stanowi 32bitowa wersja Pythona. Po reinstalacji mogłem już korzystać z CSVKit zamiast swoich programów w C++. Chociaż trzeba przyznać, iż czas działania CSVKit jest okropnie długi (mimo że mój kod był daleki od optymalnego wykonywał się <code>30 sec </code>
 
 #### Początek oryginalnego pliku
