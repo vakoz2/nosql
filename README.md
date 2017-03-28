@@ -53,7 +53,7 @@ Kolumny, które odrzuciłem to: id, nume sprawy, kod FBI, IUCR (który jest id d
 Jak wspomniałem wyżej działanie CSVKit dla całego pliku z  danymi trwa bardzo długo (po ponad godzinie go przerwałem).
 - Początek
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-poczatek.png)
-jak widać spore wykorzystanie pamięci, procesor się nudzi(użycie na poziomie 5-20%)
+Jak widać spore wykorzystanie pamięci, procesor się nudzi(użycie na poziomie 5-20%)
 - Po godzinie
 ![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/csvjson-pamiec.png)
 Wykorzystanie pamięci ~100%. Procesor nadal słabo wykorzystywany.
@@ -85,7 +85,9 @@ Wszystkie poniższe komendy są uruchamiane ze skryptu [postgres.bat](https://gi
 <code>pg_ctl start</code>
 ##### Pobieranie (bez zapisu na dysk) i oczyszczanie danych oraz utworzenie bazy, tabeli i import danych.
 Trzeba przyznać, że CSVKit świetnie sobie radzi z rozpoznawaniem typu danych i konwersji ich do odpowiedniego formatu, np w oryginalnym pliku data wygląda tak: 05/03/2016 11:40:00 PM (jak próbowałem ręcznie wpisać taką datę do postgresa to wyrzucało mi błąd (oczywiście można by użyć daty takiego typu, ale wymagało by to zmiany w configu, albo  zdefiniowanie tego formatu timestampem)).
+
 <code>ptime scripts\pg_import.bat %link%</code>
+
 **plik pg_import.bat**
 ```
 curl -s %1 | 
@@ -95,7 +97,7 @@ csvsql --db postgresql:///test --insert --tables crimes
 ```
 
 
-![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/pg_import.png)
+![alt tag](http://tutaj link do pg_import)
 ```
 Execution time: 13.358 s
 ```
@@ -110,6 +112,7 @@ Execution time: 0.571 s
 ```
 #### Agregacje
 Pliki z zapytaniami agregującymi są odpalane poleceniem:
+
 <code>ptime psql -d test -f scripts\pg_queryX.sql</code>, gdzie X to numer agregacji.
 
 ##### 1. Ilość przestępstw w danych latach:
@@ -177,6 +180,7 @@ Wszystkie poniższe komendy są uruchamiane ze skryptu [elastic.bat](https://git
 #### Import pliku z danymi
 
 <code>pip scripts\el_import.bat</code>
+
 **plik el_import.bat**
 ```
 curl -s %1 |
@@ -187,7 +191,7 @@ csvjson --stream | jq -c ". |
 {\"index\": {\"_index\": \"crimes\", \"_type\": \"crime\", \"_id\": .id}}, ." |
 curl -XPOST localhost:9200/_bulk --data-binary @-
 ```
-![alt tag](https://github.com/vakoz2/nosql/blob/master/screenshots/el_import.png)
+![alt tag](http://tutaj link do el_import.png)
 ```
 Execution time: 16.403 s
 ```
@@ -203,6 +207,7 @@ Execution time: 0.058 s
 
 #### Agregacje
 Pliki z zapytaniami agregującymi są odpalane poleceniem:
+
 <code>ptime scripts\el_queryX.bat</code>, gdzie X to numer agregacji.
 ##### 1. Ilość przestępstw w danych latach:
 ```
@@ -331,4 +336,4 @@ Execution time: 0.050 s
 Execution time: 0.059 s
 ```
 
-# [Zadanie GEO]((https://vakoz2.github.io)
+# Zadanie GEO(https://vakoz2.github.io)
